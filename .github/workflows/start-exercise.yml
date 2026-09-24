@@ -16,6 +16,11 @@ on:
         description: "Message d'introduction de l'exercice"
         required: true
         type: string
+      manage-workflows:
+        description: "Désactiver les workflows numérotés au démarrage"
+        required: false
+        type: boolean
+        default: true
     outputs:
       issue-url:
         description: "URL de l'Issue créée"
@@ -32,6 +37,7 @@ permissions:
 jobs:
   disable_workflows:
     name: Désactiver les workflows de l'exercice
+    if: inputs.manage-workflows
     runs-on: ubuntu-latest
 
     steps:
