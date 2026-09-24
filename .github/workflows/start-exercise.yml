@@ -76,9 +76,9 @@ jobs:
         with:
           template-file: exercise-toolkit-fr/markdown-templates/step-feedback/welcome.md
           template-vars: |
-            title: ${{ inputs.exercise-title }}
-            login: ${{ github.actor }}
-            intro_message: ${{ inputs.intro-message }}
+            title: "${{ inputs.exercise-title }}"
+            login: "${{ github.actor }}"
+            intro_message: "${{ inputs.intro-message }}"
 
       - name: Créer l'Issue de l'exercice
         id: create-issue
@@ -119,9 +119,9 @@ jobs:
         with:
           template-file: exercise-toolkit-fr/markdown-templates/readme/exercise-started.md
           template-vars: |
-            title: ${{ inputs.exercise-title }}
-            login: ${{ github.actor }}
-            issue_url: ${{ needs.create_exercise.outputs.issue-url }}
+            title: "${{ inputs.exercise-title }}"
+            login: "${{ github.actor }}"
+            issue_url: "${{ needs.create_exercise.outputs.issue-url }}"
 
       - name: Écrire le README
         env:
