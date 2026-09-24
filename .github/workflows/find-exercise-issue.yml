@@ -1,0 +1,66 @@
+name: Retrouver l'Issue de l'exercice
+
+on:
+  workflow_call:
+    inputs:
+      issue-title-text:
+        description: "Texte à rechercher dans le titre de l'Issue"
+        required: false
+        default: "Exercice"
+        type: string
+    outputs:
+      issue-url:
+        description: "URL de l'Issue trouvée"
+        value: ${{ jobs.find_exercise.outputs.issue-url }}
+      issue-number:
+        description: "Numéro de l'Issue trouvée"
+        value: ${{ jobs.find_exercise.outputs.issue-number }}
+
+permissions:
+  issues: read
+
+jobs:
+  find_exercise:
+    name: Retrouver l'Issue
+    runs-on: ubuntu-latest
+
+    outputs:
+      issue-url: ${{ steps.find-exercise-issue.outputs.ISSUE_URL }}
+      issue-number: ${{ steps.find-exercise-issue.outputs.ISSUE_NUMBER }}
+
+    steps:
+      - id: find-exercise-issue
+        uses: actions/github-script@v9
+        env:
+          ISSUE_TITLE_PREFIX: ${{ inputs.issue-title-text }}
+        with:
+          script: |
+            const response = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              sort: 'created',
+              direction: 'desc',
+              per_page: 50
+            });
+
+            const issues = response.data.filter(item => !item.pull_request);
+
+            core.startGroup(`${issues.length} Issue(s) trouvée(s)`);
+            issues.forEach(issue => {
+              core.info(`#${issue.number}: ${issue.html_url}`);
+            });
+            core.endGroup();
+
+            const issue = issues.find(issue =>
+              issue.title.includes(process.env.ISSUE_TITLE_PREFIX)
+            );
+
+            if (!issue) {
+              core.setFailed("Aucune Issue d'exercice n'a été trouvée.");
+              return;
+            }
+
+            core.info(`Issue de l'exercice : #${issue.number} (${issue.html_url})`);
+            core.setOutput('ISSUE_URL', issue.html_url);
+            core.setOutput('ISSUE_NUMBER', issue.number);
