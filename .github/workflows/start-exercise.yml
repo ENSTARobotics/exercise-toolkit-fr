@@ -156,7 +156,15 @@ jobs:
 
       - name: Désactiver les workflows numérotés
         run: |
-          workflows=$(git ls-files | grep -E '^\.github/workflows/[0-9].*\.(yml|yaml)$' || true)
+          workflows=$(git ls-files | grep -E '^\.github/workflows/[1-9][0-9]*.*\.(yml|yaml)
+          for workflow in $workflows; do
+            workflow_name="$(basename "$workflow")"
+            echo "Désactivation : $workflow_name"
+            gh api --method PUT "repos/${GITHUB_REPOSITORY}/actions/workflows/${workflow_name}/disable" || true
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ || true)
           for workflow in $workflows; do
             workflow_name="$(basename "$workflow")"
             echo "Désactivation : $workflow_name"
