@@ -20,7 +20,7 @@ on:
         description: "Désactiver les workflows numérotés après initialisation"
         required: false
         type: boolean
-        default: true
+        default: false
     outputs:
       issue-url:
         description: "URL de l'Issue créée"
