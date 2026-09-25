@@ -50,7 +50,7 @@ jobs:
       - name: Récupérer les templates français
         uses: actions/checkout@v6
         with:
-          repository: ENSTASIMOV/exercise-toolkit-fr
+          repository: ENSTARobotics/exercise-toolkit-fr
           path: exercise-toolkit-fr
           ref: main
 
