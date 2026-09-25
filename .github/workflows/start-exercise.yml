@@ -21,6 +21,11 @@ on:
         required: false
         type: boolean
         default: true
+      toolkit-ref:
+        description: "Révision exacte du toolkit à utiliser aussi pour ses templates Markdown"
+        required: false
+        type: string
+        default: "main"
     outputs:
       issue-url:
         description: "URL de l'Issue créée"
@@ -45,18 +50,18 @@ jobs:
 
     steps:
       - name: Récupérer le dépôt
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Récupérer les templates français
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           repository: ENSTARobotics/exercise-toolkit-fr
           path: exercise-toolkit-fr
-          ref: main
+          ref: ${{ inputs.toolkit-ref }}
 
       - name: Retrouver le dépôt template
         id: get-template-repo
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         with:
           script: |
             const { data: repo } = await github.rest.repos.get({
@@ -76,7 +81,7 @@ jobs:
             }
 
       - name: Rendre les images des étapes accessibles depuis les commentaires
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           STEP_FILES_GLOB: .github/steps/*.md
         with:
@@ -101,7 +106,7 @@ jobs:
 
       - name: Construire le message d'accueil
         id: build-issue-description
-        uses: skills/action-text-variables@v3
+        uses: skills/action-text-variables@fd62a3a36b6906b574d3cbd7793bf75219aa7318 # v3
         with:
           template-file: exercise-toolkit-fr/markdown-templates/step-feedback/welcome.md
           template-vars: >-
@@ -114,7 +119,7 @@ jobs:
 
       - name: Créer l'Issue de l'exercice
         id: create-issue
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           ISSUE_BODY: ${{ steps.build-issue-description.outputs.updated-text }}
           EXERCISE_TITLE: ${{ inputs.exercise-title }}
@@ -133,7 +138,7 @@ jobs:
 
       - name: Construire le README de démarrage
         id: build-new-readme
-        uses: skills/action-text-variables@v3
+        uses: skills/action-text-variables@fd62a3a36b6906b574d3cbd7793bf75219aa7318 # v3
         with:
           template-file: exercise-toolkit-fr/markdown-templates/readme/exercise-started.md
           template-vars: >-
@@ -149,7 +154,7 @@ jobs:
         run: printf '%s\n' "$README_TEXT" > README.md
 
       - name: Enregistrer l'initialisation
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5 # v9
         with:
           add: "README.md .github/steps/*.md"
           message: "Démarrer l'exercice"
@@ -163,7 +168,7 @@ jobs:
 
     steps:
       - name: Récupérer le dépôt
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Désactiver les workflows des étapes
         env:

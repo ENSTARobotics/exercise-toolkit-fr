@@ -21,6 +21,11 @@ on:
         required: false
         type: string
         default: ""
+      toolkit-ref:
+        description: "Révision exacte du toolkit à utiliser aussi pour ses templates Markdown"
+        required: false
+        type: string
+        default: "main"
 
 permissions:
   contents: write
@@ -34,20 +39,20 @@ jobs:
 
     steps:
       - name: Récupérer le dépôt
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           ref: ${{ inputs.target-branch || github.event.repository.default_branch }}
 
       - name: Récupérer les templates français
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           repository: ENSTARobotics/exercise-toolkit-fr
           path: exercise-toolkit-fr
-          ref: main
+          ref: ${{ inputs.toolkit-ref }}
 
       - name: Construire le message de félicitations
         id: build-new-readme
-        uses: skills/action-text-variables@v3
+        uses: skills/action-text-variables@fd62a3a36b6906b574d3cbd7793bf75219aa7318 # v3
         with:
           template-file: exercise-toolkit-fr/markdown-templates/readme/exercise-finished.md
           template-vars: |
@@ -62,7 +67,7 @@ jobs:
         run: echo "$README_TEXT" > README.md
 
       - name: Enregistrer le README final
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5 # v9
         with:
           add: "README.md"
           message: "Terminer l'exercice 🎉"
@@ -74,15 +79,15 @@ jobs:
 
     steps:
       - name: Récupérer les templates français
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           repository: ENSTARobotics/exercise-toolkit-fr
           path: exercise-toolkit-fr
-          ref: main
+          ref: ${{ inputs.toolkit-ref }}
 
       - name: Construire le message final
         id: build-finish-message
-        uses: skills/action-text-variables@v3
+        uses: skills/action-text-variables@fd62a3a36b6906b574d3cbd7793bf75219aa7318 # v3
         with:
           template-file: exercise-toolkit-fr/markdown-templates/step-feedback/exercise-finished.md
           template-vars: |
