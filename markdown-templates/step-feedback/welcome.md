@@ -8,15 +8,13 @@
 
 ---
 
-✨ **Tu vas apprendre en manipulant directement GitHub.**
+✨ **Le cours va te guider là où tu travailles.**
 
-À chaque étape, je publierai automatiquement des mises à jour dans les commentaires pour :
+Au début, cette Issue sert de fil conducteur. À chaque étape, le bot vérifie ton action puis publie la suite.
 
-- ✅ vérifier ton travail et t'indiquer la suite ;
-- 💡 te donner des conseils et des ressources utiles ;
-- 🚀 suivre ta progression jusqu'à la fin de l'exercice.
+Quand tu ouvriras une **pull request**, c'est-à-dire l'espace GitHub où l'on propose et relit un changement avant de l'intégrer, la suite apparaîtra directement dans sa conversation. Tu n'auras donc pas à revenir sans cesse dans cette Issue.
 
-Garde cette Issue ouverte dans un onglet et utilise un second onglet pour manipuler le dépôt.
+Tu peux garder cette page ouverte comme journal de progression, mais suis simplement les messages du bot au fur et à mesure.
 
 C'est parti !
 
